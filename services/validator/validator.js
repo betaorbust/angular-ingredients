@@ -154,6 +154,21 @@ angular.module('services.utility')
 	
 	var validators = {
 		/**
+		 * Does nothing. Good for if your validator definition has some if/then logic in it.
+		 * Something like:
+		 * <pre>
+		 * 'validators': [(a === b) ? {'type': 'required'} : {'type': 'noop'}]
+		 * </pre>
+		 * @params val    Not used in this validator.
+		 * @param  pretty Not used in this validator.
+		 * @param  args   Not used in this validator.
+		 * @return {validationReturnObject}        Always returns valid.
+		 */
+		'noop': function(val, pretty, args){
+			return VALID;
+		},
+
+		/**
 		 * Requires a field to have something in it.
 		 *
 		 * @function
@@ -290,41 +305,44 @@ angular.module('services.utility')
 				vObj = vObjs[i];
 				for(var j=0; j < vObj.validators.length; j++){
 					v = vObj.validators[j]; // Grab a validator
-					// execute the typeReq
-					if(typeof(validators[v.type])==='function'){
-						var val = vObj.value;		// Get the value being validated
-						var pretty = vObj.pretty;	// Get the pretty-print name
-						var args = v.args || [];	// Get the arguments if there are any
-						var ret = validators[v.type](val, pretty, args); // Run the validator
-						//console.log('return from the validator is ');
-						//console.log(ret);
-						if(!ret.valid){
-							rObj.valid = false;
-							rObj.errorText[i] = rObj.errorText[i] || []; // Make sure there's something to push to
-							rObj.errorText[i].push(
-								(typeof(v.failMsg)==='undefined') ? ret.errorText.charAt(0).toUpperCase() + ret.errorText.slice(1) : v.failMsg
-							);
-						}else{
-							// Check if this validator has any others chained to it
-							if(v.hasOwnProperty('chained')){
-								// check the chain for success
-								//for(var k = 0; k<v.chained.length; k++){ // go through the array and process each validationObject
-								//	console.log('k is '+k);
-									// build a validationCollection
-									var ch = {};
-									ch[i] = {'pretty': pretty, 'value': val,'validators': v.chained};
-									var chainedRet = this.check(ch);
-									if(chainedRet.valid===false){
-										rObj.valid = false;
-										rObj.errorText[i] = rObj.errorText[i] || [];
-										// Add any errors from the chain to the return object
-										rObj.errorText[i] = rObj.errorText[i].concat(chainedRet.errorText[i]);
-									}
-								//}
+					// Make sure it's not disabled
+					if(typeof(v.disabled) === 'undefined' || v.disabled === false){
+						// execute the typeReq
+						if(typeof(validators[v.type])==='function'){
+							var val = vObj.value;		// Get the value being validated
+							var pretty = vObj.pretty;	// Get the pretty-print name
+							var args = v.args || [];	// Get the arguments if there are any
+							var ret = validators[v.type](val, pretty, args); // Run the validator
+							//console.log('return from the validator is ');
+							//console.log(ret);
+							if(!ret.valid){
+								rObj.valid = false;
+								rObj.errorText[i] = rObj.errorText[i] || []; // Make sure there's something to push to
+								rObj.errorText[i].push(
+									(typeof(v.failMsg)==='undefined') ? ret.errorText.charAt(0).toUpperCase() + ret.errorText.slice(1) : v.failMsg
+								);
+							}else{
+								// Check if this validator has any others chained to it
+								if(v.hasOwnProperty('chained')){
+									// check the chain for success
+									//for(var k = 0; k<v.chained.length; k++){ // go through the array and process each validationObject
+									//	console.log('k is '+k);
+										// build a validationCollection
+										var ch = {};
+										ch[i] = {'pretty': pretty, 'value': val,'validators': v.chained};
+										var chainedRet = this.check(ch);
+										if(chainedRet.valid===false){
+											rObj.valid = false;
+											rObj.errorText[i] = rObj.errorText[i] || [];
+											// Add any errors from the chain to the return object
+											rObj.errorText[i] = rObj.errorText[i].concat(chainedRet.errorText[i]);
+										}
+									//}
+								}
 							}
+						}else{
+							console.warn('You tried to use a validator that doesn\'t exist! The name you tried to use was: ' + v.type);
 						}
-					}else{
-						console.warn('You tried to use a validator that doesn\'t exist! The name you tried to use was: ' + v.type);
 					}
 				}
 			}}
