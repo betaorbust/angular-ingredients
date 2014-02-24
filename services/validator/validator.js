@@ -356,6 +356,35 @@ angular.module('utility')
 			}
 			else{return VALID;}
 		},
+
+		/**
+		 * Validate a string against a regex. Will return as valid if any match is made, so make your
+		 * regex ROBUST!
+		 * @param  {String} val    The string under test
+		 * @param  {String} pretty The pretty-print name of the field under test.
+		 *                         Used in error messages.
+		 * @param  {Array} args    The first (and only) value in this array is the regex object to
+		 *                         check against.
+		 * @return {validationReturnObject}        The return of this validation.
+		 */
+		regex: function(val, pretty, args){
+			if(typeof(args[0])!=='object' || args[0] instanceof RegExp === false){
+				console.error('Regex evaluator types must have a regex value for arg[0] but got '+args[0]);
+				return {'valid':false,'errorText':'Validator for '+pretty+' should be called with regex as arg[0]'};
+			}
+			if(typeof(val)!=='string'){
+				console.error('Regex can only be called on a string! Tried to call it on '+val+' for '+pretty);
+				return {
+					'valid': false,
+					'errorText': 'Broken validator. Regex for '+pretty+' wasn\'t called on a string'
+				};
+			}
+			if(val.match(args[0])){return VALID;}
+			else{
+				return {'valid':false,'errorText':pretty+' failed regex validation with value '+val};
+			}
+		},
+
 		}
 	};
 	return{
