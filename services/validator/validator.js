@@ -251,6 +251,35 @@ angular.module('utility')
 			}
 			return VALID;
 		},
+
+		/**
+		 * Validates if a string is made of numeric characters only.
+		 *
+		 * @function
+		 * @name validators#numericString
+		 * @param  {String} val    The string under test.
+		 * @param  {String} pretty The pretty-print name of the field under test. Used in error
+		 *                         messages.
+		 * @param  {Array} args   The argument array. Not used in this validator.
+		 * @return {validationReturnObject}        The return of this validation.
+		 */
+		numericString: function(val, pretty, args){
+			// Deal with if the value isn't a string.
+			if(typeof(val)!=='string'){
+				console.error('The numericString evaluator can only take in a string! You tried '+
+					typeof(val));
+				return {'valid':false,
+					'errorText':'The numericString evaluator can only take in a string! You tried '+
+					typeof(val)};
+			}
+
+			// Test if the string is only made of numeric characters 0-9
+			if(!/^[0-9]+$/.test(val)){
+				return {'valid': false, 'errorText': pretty+' can only be numeric characters.'};
+			}
+			return VALID;
+		},
+
 		/**
 		 * Validates an email address
 		 *
