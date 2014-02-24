@@ -12,30 +12,30 @@
  *  //   First name is required, has arbitrary javascript run on it.
  *
  * var validTest = {
- *     'first_name': {
- *         'pretty': 'first name',
- *         'value': testName,
- *         'validators': [
- *             {'type': 'required'},
+ *     first_name: {
+ *         pretty: 'first name',
+ *         value: testName,
+ *         validators: [
+ *             {type: 'required'},
  *             {
- *                 'type': 'javascript',
- *                 'args': [
+ *                 type: 'javascript',
+ *                 args: [
  *                     function(a){return true;},
  *                     testName
  *                 ],
- *                 'failMsg': 'your first name was a complete failure'
+ *                 failMsg: 'your first name was a complete failure'
  *             }
  *         ]
  *     },
- *     'password': {
- *         'pretty': 'password',
- *         'value': testPass,
- *         'validators': [
+ *     password: {
+ *         pretty: 'password',
+ *         value: testPass,
+ *         validators: [
  *             {
- *                 'type': 'required',
- *                 'chained':[{
- *                     'type': 'strLen',
- *                     'args': [6, 20],
+ *                 type: 'required',
+ *                 chained: [{
+ *                     type: 'strLen',
+ *                     args: [6, 20],
  *                 }]
  *             },
  *         ]
@@ -45,10 +45,10 @@
  * // What would come back if everything failed. Note the chained validator on password's 'require'
  * // validator was not checked because 'require' failed.
  * var retVal = {
- *     'valid': false,
- *     'errorText': {
- *         'first_name': ['first name is required.', 'your first name was a complete failure.'],
- *         'password': ['password is required.]
+ *     valid: false,
+ *     errorText: {
+ *         first_name: ['first name is required.', 'your first name was a complete failure.'],
+ *         password: ['password is required.]
  *     }
  * };
  * </pre>
@@ -144,7 +144,7 @@ angular.module('utility')
 	 * @private
 	 * @type {validationReturnObject}
 	 */
-	var VALID = {'valid': true, 'errorText': ''};
+	var VALID = {valid: true, errorText: ''};
 
 	/**
 	 * @memberOf validator
@@ -157,7 +157,7 @@ angular.module('utility')
 		 * Does nothing. Good for if your validator definition has some if/then logic in it.
 		 * Something like:
 		 * <pre>
-		 * 'validators': [(a === b) ? {'type': 'required'} : {'type': 'noop'}]
+		 * validators: [(a === b) ? {type: 'required'} : {type: 'noop'}]
 		 * </pre>
 		 * @params val    Not used in this validator.
 		 * @param  pretty Not used in this validator.
@@ -182,17 +182,17 @@ angular.module('utility')
 		required: function(val, pretty, args){
 			var isValid = true;
 
-			if (typeof(val)==='undefined') {
+			if (typeof(val) === 'undefined') {
 				isValid = false;
-			} else if (typeof(val)==='boolean') {
+			} else if (typeof(val) === 'boolean') {
 				isValid = val;
-			} else if (typeof(val)==='string') {
+			} else if (typeof(val) === 'string') {
 				isValid = val.replace(/^\s*(.*?)\s*$/, '$1') !== '';
 			} else if (val === null) {
 				isValid = false;
 			}
 
-			return isValid ? VALID : {'valid': false, 'errorText': pretty+' is required.'};
+			return isValid ? VALID : {valid: false, errorText: pretty + ' is required.'};
 		},
 		/**
 		 * Requires a string field to be longer than a given number of characters.
@@ -208,12 +208,13 @@ angular.module('utility')
 		 *                         but if they are the same value, it will check for an exact length match.
 		 * @return {validationReturnObject}
 		 */
-		'strLen': function(val, pretty, args){
+		strLen: function(val, pretty, args){
 			// check if you got a string for a value
 			// check if you got a pretty string
 			//console.log([args, pretty, val]);
-			if(typeof(val)!=='string'||typeof(pretty)!=='string'||typeof(args)!=='object'||args.length!==2){
-				console.error('Wrong parameters passed to strLen validator for '+pretty);
+			if(typeof(val) !== 'string' || typeof(pretty) !== 'string' ||
+				typeof(args) !== 'object' || args.length !== 2){
+				console.error('Wrong parameters passed to strLen validator for ' + pretty);
 			}
 			var len = val.length;
 			var lowerBound = args[0];
@@ -221,30 +222,38 @@ angular.module('utility')
 
 			// check if args are number or undefined
 			// if both lowerBound and upperBound set
-			if(typeof(lowerBound)==='number' && typeof(upperBound)==='number'){
+			if(typeof(lowerBound) === 'number' && typeof(upperBound) === 'number'){
 				// Deal with the exact length case.
 				if(lowerBound === upperBound && lowerBound !== len){
-					return {'valid': false, 'errorText': pretty+' has to be exactly '+
-					upperBound+' characters long.'};
+					return {
+						valid: false,
+						errorText: pretty + ' has to be exactly ' + upperBound +' characters long.'
+					};
 				}
-				else if(len<lowerBound||len>upperBound){
-					return {'valid': false, 'errorText': pretty+' has to be between '+
-					lowerBound+' and '+upperBound+' characters long.'};
+				else if(len < lowerBound || len > upperBound){
+					return {
+						valid: false,
+						errorText: pretty+' has to be between ' + lowerBound + ' and ' +
+							upperBound + ' characters long.'
+					};
 				}
 			}else{
 				// if lowerBound set only
-				if(typeof(lowerBound)==='number' && len<lowerBound){
-					return {'valid': false, 'errorText': pretty+' has to be more than '+
-					lowerBound+ ((lowerBound <= 1) ? ' character' : ' characters')+' long.'};
+				if(typeof(lowerBound) === 'number' && len<lowerBound){
+					return {
+						valid: false,
+						errorText: pretty + ' has to be more than ' + lowerBound +
+							((lowerBound <= 1) ? ' character' : ' characters') + ' long.'
+					};
 				}
 				// if upperBound set only
-				else if(typeof(upperBound)==='number' && len>upperBound){
+				else if(typeof(upperBound) === 'number' && len>upperBound){
 					return{
-							'valid': false,
-							'errorText': pretty+' has to be '+
+							valid: false,
+							errorText: pretty + ' has to be ' +
 								((upperBound <= 1) ?
 									'less than 1 character' :
-									'fewer than '+upperBound+' characters')+
+									'fewer than ' + upperBound + ' characters') +
 								' long.'
 						};
 				}
@@ -265,17 +274,19 @@ angular.module('utility')
 		 */
 		numericString: function(val, pretty, args){
 			// Deal with if the value isn't a string.
-			if(typeof(val)!=='string'){
+			if(typeof(val) !== 'string'){
 				console.error('The numericString evaluator can only take in a string! You tried '+
 					typeof(val));
-				return {'valid':false,
-					'errorText':'The numericString evaluator can only take in a string! You tried '+
-					typeof(val)};
+				return {
+					valid: false,
+					errorText: 'The numericString evaluator can only take in a string! You tried '+
+					typeof(val)
+				};
 			}
 
 			// Test if the string is only made of numeric characters 0-9
 			if(!/^[0-9]+$/.test(val)){
-				return {'valid': false, 'errorText': pretty+' can only be numeric characters.'};
+				return {valid: false, errorText: pretty+' can only be numeric characters.'};
 			}
 			return VALID;
 		},
@@ -293,12 +304,18 @@ angular.module('utility')
 		 */
 		email:function(val, pretty, args){
 			// Basic checking to stop some mess.
-			if(typeof(val)!=='string'||typeof(pretty)!=='string'){
-				console.error('Wrong parameters passed to email validator for '+pretty);
+			if(typeof(val) !== 'string' || typeof(pretty) !== 'string'){
+				console.error('Wrong parameters passed to email validator for ' + pretty);
 			}
 			var re = /^[a-z0-9!#$%&'*+\/=?\^_`{|}~\-]+(?:\.[a-z0-9!#$%&'*+\/=?\^_`{|}~\-]+)*@(?:[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?$/i;
-			if(re.test(val)){return VALID;}
-			else{return {'valid': false, 'errorText': pretty+' has to be a valid email address.'};}
+			if(re.test(val)){
+				return VALID;
+			}else{
+				return {
+					valid: false,
+					errorText: pretty + ' has to be a valid email address.'
+				};
+			}
 		},
 		/**
 		 * Validates that two values are equal
@@ -316,14 +333,23 @@ angular.module('utility')
 		 * @return {validationReturnObject}        The return of this validation.
 		 */
 		equal: function(val, pretty, args){
-			if((typeof(val)!=='string'&&typeof(val)!=='number'&&typeof(val)!=='boolean')||typeof(args)!=='object'||args.length!==2){
+			if((typeof(val) !== 'string' && typeof(val) !== 'number' && typeof(val) !== 'boolean') ||
+				typeof(args) !== 'object' || args.length !== 2){
 				console.error('Wrong parameters passed to equal validator for '+pretty);
 			}
-			if(typeof(val)!=='string'&&typeof(val)!=='number'&&typeof(val)!=='boolean'){
-				console.error('Validator "Equal" only works for strings, numbers, and booleans. Tried '+typeof(val)+' for '+pretty);
+			if(typeof(val) !== 'string' && typeof(val) !== 'number' && typeof(val) !== 'boolean'){
+				console.error(
+					'Validator "Equal" only works for strings, numbers, and booleans. Tried ' +
+					typeof(val)+' for '+pretty);
 			}
-			if(val===args[0]){ return VALID;}
-			else{ return {'valid':false,'errorText':pretty+' and '+args[1]+' have to be the same.'};}
+			if(val === args[0]){
+				return VALID;
+			}else{
+				return {
+					valid: false,
+					errorText: pretty + ' and ' + args[1] + ' have to be the same.'
+				};
+			}
 		},
 
 		/**
@@ -349,10 +375,16 @@ angular.module('utility')
 			var res = scr.apply(undefined, scrArgs);
 			if(typeof(res)!=='boolean'){
 				console.error('Javascript evaluator types must return only boolean values! This one returned '+res);
-				return {'valid':false,'errorText':'Validator for '+pretty+' should have returned a bool, but returned '+res};
+				return {
+					valid: false,
+					errorText: 'Validator for ' + pretty + ' should have returned a bool, but returned '+res
+				};
 			}
 			if(!res){
-				return {'valid':false,'errorText':pretty+' failed validation with value '+val};
+				return {
+					valid: false,
+					errorText: pretty + ' failed validation with value ' + val
+				};
 			}
 			else{return VALID;}
 		},
@@ -369,19 +401,24 @@ angular.module('utility')
 		 */
 		regex: function(val, pretty, args){
 			if(typeof(args[0])!=='object' || args[0] instanceof RegExp === false){
-				console.error('Regex evaluator types must have a regex value for arg[0] but got '+args[0]);
-				return {'valid':false,'errorText':'Validator for '+pretty+' should be called with regex as arg[0]'};
+				console.error(
+					'Regex evaluator types must have a regex value for arg[0] but got ' + args[0]);
+				return {
+					valid: false,
+					errorText: 'Validator for ' + pretty + ' should be called with regex as arg[0]'
+				};
 			}
 			if(typeof(val)!=='string'){
-				console.error('Regex can only be called on a string! Tried to call it on '+val+' for '+pretty);
+				console.error('Regex can only be called on a string! Tried to call it on ' + val +
+					' for '+pretty);
 				return {
-					'valid': false,
-					'errorText': 'Broken validator. Regex for '+pretty+' wasn\'t called on a string'
+					valid: false,
+					errorText: 'Broken validator. Regex for ' + pretty + ' wasn\'t called on a string'
 				};
 			}
 			if(val.match(args[0])){return VALID;}
 			else{
-				return {'valid':false,'errorText':pretty+' failed regex validation with value '+val};
+				return {valid: false,errorText: pretty+' failed regex validation with value '+val};
 			}
 		},
 
@@ -420,7 +457,7 @@ angular.module('utility')
 		 */
 		check: function(vObjs){
 			var vObj;
-			var rObj = {'valid': true, 'errorText': {}};
+			var rObj = {valid: true, errorText: {}};
 			var v;
 			// loop over the validation objects.
 			for (var i in vObjs){if(vObjs.hasOwnProperty(i)){
@@ -432,39 +469,42 @@ angular.module('utility')
 					if(typeof(v.disabled) === 'undefined' || v.disabled === false){
 						// execute the typeReq
 						if(typeof(validators[v.type])==='function'){
-							var val = vObj.value;		// Get the value being validated
-							var pretty = vObj.pretty || i;	// Get the pretty-print name. Use the object name if none set.
-							var args = v.args || [];	// Get the arguments if there are any
-							var ret = validators[v.type](val, pretty, args); // Run the validator
-							//console.log('return from the validator is ');
-							//console.log(ret);
+							// Get the value being validated
+							var val = vObj.value;
+							// Get the pretty-print name. Use the object name if none set.
+							var pretty = vObj.pretty || i;
+							// Get the arguments if there are any
+							var args = v.args || [];
+							// Run the validator
+							var ret = validators[v.type](val, pretty, args);
+
 							if(!ret.valid){
 								rObj.valid = false;
-								rObj.errorText[i] = rObj.errorText[i] || []; // Make sure there's something to push to
+								// Make sure there's something to push to
+								rObj.errorText[i] = rObj.errorText[i] || [];
 								rObj.errorText[i].push(
-									(typeof(v.failMsg)==='undefined') ? ret.errorText.charAt(0).toUpperCase() + ret.errorText.slice(1) : v.failMsg
+									(typeof(v.failMsg)==='undefined') ?
+										ret.errorText.charAt(0).toUpperCase() + ret.errorText.slice(1) :
+										v.failMsg
 								);
 							}else{
 								// Check if this validator has any others chained to it
 								if(v.hasOwnProperty('chained')){
-									// check the chain for success
-									//for(var k = 0; k<v.chained.length; k++){ // go through the array and process each validationObject
-									//	console.log('k is '+k);
-										// build a validationCollection
-										var ch = {};
-										ch[i] = {'pretty': pretty, 'value': val,'validators': v.chained};
-										var chainedRet = this.check(ch);
-										if(chainedRet.valid===false){
-											rObj.valid = false;
-											rObj.errorText[i] = rObj.errorText[i] || [];
-											// Add any errors from the chain to the return object
-											rObj.errorText[i] = rObj.errorText[i].concat(chainedRet.errorText[i]);
-										}
-									//}
+									// build a validationCollection
+									var ch = {};
+									ch[i] = {pretty: pretty, value: val,validators: v.chained};
+									var chainedRet = this.check(ch);
+									if(chainedRet.valid===false){
+										rObj.valid = false;
+										rObj.errorText[i] = rObj.errorText[i] || [];
+										// Add any errors from the chain to the return object
+										rObj.errorText[i] = rObj.errorText[i].concat(chainedRet.errorText[i]);
+									}
 								}
 							}
 						}else{
-							console.warn('You tried to use a validator that doesn\'t exist! The name you tried to use was: ' + v.type);
+							console.warn('You tried to use a validator that doesn\'t exist!' +
+								'The name you tried to use was: ' + v.type);
 						}
 					}
 				}
