@@ -433,7 +433,7 @@ angular.module('utility')
 						// execute the typeReq
 						if(typeof(validators[v.type])==='function'){
 							var val = vObj.value;		// Get the value being validated
-							var pretty = vObj.pretty;	// Get the pretty-print name
+							var pretty = vObj.pretty || i;	// Get the pretty-print name. Use the object name if none set.
 							var args = v.args || [];	// Get the arguments if there are any
 							var ret = validators[v.type](val, pretty, args); // Run the validator
 							//console.log('return from the validator is ');
