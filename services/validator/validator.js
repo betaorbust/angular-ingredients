@@ -385,6 +385,28 @@ angular.module('utility')
 			}
 		},
 
+		/**
+		 * Checks if a string is a valid date.
+		 * @param  {String} val     The string to be validated.
+		 * @param  {String} pretty  The pretty print name of the field
+		 *                          being validated.
+		 *
+		 * @return {validationReturnObject}     The return of this validation.
+		 */
+		dateString: function(val, pretty, args){
+			var failVal = {
+				valid: false,
+				errorText: pretty+' must be a date of the format mm/dd/yyyy.'
+			};
+			var t = val.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/);
+			if(t!==null){
+				var d=+t[2], m=+t[1], y=+t[3];
+				var date = new Date(y,m-1,d);
+				if((''+date.getFullYear()).slice(-2)===(y+'').slice(-2) &&
+					date.getMonth()===m-1){
+						return VALID;
+				}else{return failVal;}
+			}else{return failVal;}
 		}
 	};
 	return{
