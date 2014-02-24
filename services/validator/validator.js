@@ -179,15 +179,20 @@ angular.module('utility')
 		 * @param  {Array} [args]   Not used in this validator.
 		 * @return {validationReturnObject}
 		 */
-		'required': function(val, pretty, args){
-			// Check if it's not a string
-			if((typeof(val)==='string'&&val.replace(/^\s\s*/, '').replace(/\s\s*$/, '')==='')||
-				(typeof(val)==='undefined')||
-				(typeof(val)==='boolean'&&!val)){
-				return {'valid': false, 'errorText': pretty+' is required.'};
-			}else{
-				return VALID;
+		required: function(val, pretty, args){
+			var isValid = true;
+
+			if (typeof(val)==='undefined') {
+				isValid = false;
+			} else if (typeof(val)==='boolean') {
+				isValid = val;
+			} else if (typeof(val)==='string') {
+				isValid = val.replace(/^\s*(.*?)\s*$/, '$1') !== '';
+			} else if (val === null) {
+				isValid = false;
 			}
+
+			return isValid ? VALID : {'valid': false, 'errorText': pretty+' is required.'};
 		},
 		/**
 		 * Requires a string field to be longer than a given number of characters.
