@@ -324,6 +324,38 @@ angular.module('utility')
 			}
 			if(val===args[0]){ return VALID;}
 			else{ return {'valid':false,'errorText':pretty+' and '+args[1]+' have to be the same.'};}
+		},
+
+		/**
+		 * Validate with a generic javascript validation
+		 * @param  {String|Number|Boolean} val    The value under test.
+		 * @param  {String} pretty The pretty-print name of the field under test.
+		 *                         Used in error messages.
+		 * @param  {Array} args   The argument array for the validation. The first
+		 *                        argument MUST be the function to test. The function must return a
+		 *                        boolean value. The subsequent values in args will be fed into the
+		 *                        function as arguments as follows:
+		 *                        <pre>
+		 *                          args[0].call(undefined, [val, args[1], args[2],...])
+		 *                        </pre>
+		 *                        Odd format, I know, but it holds with the rest of the validators
+		 *                        format and the major use case has been one value and one function
+		 *                        which makes this format very simple.
+		 * @return {validationReturnObject}        The return of this validation.
+		 */
+		javascript: function(val, pretty, args){
+			var scr = args[0];
+			var scrArgs = [val].concat(args.slice(1));
+			var res = scr.apply(undefined, scrArgs);
+			if(typeof(res)!=='boolean'){
+				console.error('Javascript evaluator types must return only boolean values! This one returned '+res);
+				return {'valid':false,'errorText':'Validator for '+pretty+' should have returned a bool, but returned '+res};
+			}
+			if(!res){
+				return {'valid':false,'errorText':pretty+' failed validation with value '+val};
+			}
+			else{return VALID;}
+		},
 		}
 	};
 	return{
