@@ -222,7 +222,12 @@ angular.module('utility')
 			// check if args are number or undefined
 			// if both lowerBound and upperBound set
 			if(typeof(lowerBound)==='number' && typeof(upperBound)==='number'){
-				if(len<lowerBound||len>upperBound){
+				// Deal with the exact length case.
+				if(lowerBound === upperBound && lowerBound !== len){
+					return {'valid': false, 'errorText': pretty+' has to be exactly '+
+					upperBound+' characters long.'};
+				}
+				else if(len<lowerBound||len>upperBound){
 					return {'valid': false, 'errorText': pretty+' has to be between '+
 					lowerBound+' and '+upperBound+' characters long.'};
 				}
