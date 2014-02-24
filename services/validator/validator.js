@@ -59,40 +59,40 @@
  * is a validationCollection object.
  */
 
-angular.module('services.utility')
+angular.module('utility')
 
 .factory('validator', [function () {
-						 /*---------------------------
-						 | Validate! VALIDAAAATE!!!!! |
-						 /----------------------------
-						/
-	      _n____n__
-	     /         \---||--<(O
-	    /___________\
-	    _|____|____|_
-	    _|____|____|_
-	     |    |    |
-	    --------------
-	    | || || || ||\
-	    | || || || || \++++++------<()
-	    ===============
-	    |   |  |  |   |
-	   (| O | O| O| O |)
-	   |   |   |   |   |
-	  (| O | O | O | O |)
-	   |   |   |   |    |
-	 (| O |  O | O  | O |)
-	  |   |    |    |    |
-	 (| O |  O |  O |  O |)
-	 \====================*/
-
+	'use strict';
+                      /*---------------------------
+                      | Validate! VALIDAAAATE!!!!! |
+                      /----------------------------
+                     /
+         _n____n__
+        /         \---||--<(O
+       /___________\
+       _|____|____|_
+       _|____|____|_
+        |    |    |
+       --------------
+       | || || || ||\
+       | || || || || \++++++------<()
+       ===============
+       |   |  |  |   |
+      (| O | O| O| O |)
+      |   |   |   |   |
+     (| O | O | O | O |)
+      |   |   |   |    |
+    (| O |  O | O  | O |)
+     |   |    |    |    |
+    (| O |  O |  O |  O |)
+    \====================*/
 
 	/**
 	 * @typedef validationCollection
 	 * @type {Object.<string, fieldValidation>}
 	 * @description A collection of fieldValidation objects with the field name as the key.
 	 */
-	
+
 	/**
 	 * @typedef fieldValidation
 	 * @type {Object}
@@ -106,7 +106,7 @@ angular.module('services.utility')
 	 * @typedef validationObject
 	 * @type {Object}
 	 * @description An object describing a single validation.
-	 * @property {String} type The type of validator ('reqired', 'lt', etc.)
+	 * @property {String} type The type of validator ('required', 'lt', etc.)
 	 * @property {Array} [args] An array of the arguments the validator needs to run.
 	 *                          See documentation for specific validators for what this should be.
 	 * @property {String} [failMsg] An optional message to be returned if this validator fails.
@@ -122,7 +122,7 @@ angular.module('services.utility')
 	 *                                              display "Email is required. Email must be a
 	 *                                              valid."
 	 */
-	
+
 	/**
 	 * @typedef completeValidationReturnObject
 	 * @type {Object}
@@ -131,7 +131,7 @@ angular.module('services.utility')
 	 *                              name (that was passed in in the validationObjects) as they
 	 *                              key and an array of strings as the value.
 	 */
-	
+
 	/**
 	 * @typedef validationReturnObject
 	 * @type {Object}
@@ -151,7 +151,7 @@ angular.module('services.utility')
 	 * @name validator#validators
 	 * @namespace validators
 	 */
-	
+
 	var validators = {
 		/**
 		 * Does nothing. Good for if your validator definition has some if/then logic in it.
@@ -164,7 +164,7 @@ angular.module('services.utility')
 		 * @param  args   Not used in this validator.
 		 * @return {validationReturnObject}        Always returns valid.
 		 */
-		'noop': function(val, pretty, args){
+		noop: function(val, pretty, args){
 			return VALID;
 		},
 
@@ -199,7 +199,8 @@ angular.module('services.utility')
 		 *                         creating the default failure message.
 		 * @param  {Number[]} args The values for this validation. In the format
 		 *                         [lowerBound, upperBound]. lowerBound and upperBound Either can
-		 *                         be undefined and will not be checked.
+		 *                         be undefined and will not be checked. Normally they are exclusive bounds
+		 *                         but if they are the same value, it will check for an exact length match.
 		 * @return {validationReturnObject}
 		 */
 		'strLen': function(val, pretty, args){
@@ -251,14 +252,14 @@ angular.module('services.utility')
 		 * @param  {Array} args   The argument array. Not used in this validator.
 		 * @return {validationReturnObject}        The return of this validation.
 		 */
-		'email':function(val, pretty, args){
+		email:function(val, pretty, args){
 			// Basic checking to stop some mess.
 			if(typeof(val)!=='string'||typeof(pretty)!=='string'){
 				console.error('Wrong parameters passed to email validator for '+pretty);
 			}
 			var re = /^[a-z0-9!#$%&'*+\/=?\^_`{|}~\-]+(?:\.[a-z0-9!#$%&'*+\/=?\^_`{|}~\-]+)*@(?:[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?$/i;
 			if(re.test(val)){return VALID;}
-			else{return {'valid': false, 'errorText': pretty+' has to be a valid email address'};}
+			else{return {'valid': false, 'errorText': pretty+' has to be a valid email address.'};}
 		},
 		/**
 		 * Validates that two values are equal
@@ -275,7 +276,7 @@ angular.module('services.utility')
 		 *                        ]
 		 * @return {validationReturnObject}        The return of this validation.
 		 */
-		'equal': function(val, pretty, args){
+		equal: function(val, pretty, args){
 			if((typeof(val)!=='string'&&typeof(val)!=='number'&&typeof(val)!=='boolean')||typeof(args)!=='object'||args.length!==2){
 				console.error('Wrong parameters passed to equal validator for '+pretty);
 			}
