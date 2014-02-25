@@ -35,7 +35,7 @@ module.exports = {
 		'lib/angular/*.js',
 		'lib/angular/**/*.js',
 		'lib/underscore/**/*.js',
-		'services/**/*.js',
+		'src/**/*.js',
 		// libraries only used in testing
 		'tests/unit/lib/mocks/mock_module.js',
 		'tests/unit/lib/**/*.js',
@@ -51,7 +51,7 @@ module.exports = {
 
 	// Preprocessors to run before tests
 	preprocessors: {
-		'services/**/*.js': 'coverage',
+		'src/**/*.js': 'coverage',
 		'templates/**/*.html': 'ng-html2js'
 	},
 
