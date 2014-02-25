@@ -59,7 +59,7 @@
  * is a validationCollection object.
  */
 
-angular.module('utility')
+angular.module('ingredients')
 
 .factory('validator', [function () {
 	'use strict';
