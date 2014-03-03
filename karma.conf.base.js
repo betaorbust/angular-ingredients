@@ -32,6 +32,7 @@ module.exports = {
 
 	// list of files / patterns to load in the browser
 	files: [
+		'lib/jquery/jquery*.min.js',
 		'lib/angular/*.js',
 		'lib/angular/**/*.js',
 		'lib/underscore/**/*.js',
