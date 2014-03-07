@@ -1,0 +1,85 @@
+{
+	// Defines globals exposed by modern browsers: all the way from good ol' document and navigator to the HTML5 FileReader and other new developments in the browser world.
+	"browser": true,
+	// Prohibits the use of bitwise operators such as ^ (XOR), | (OR) and others.
+	"bitwise": true,
+	// Requires variable names to be camelCase or ALL_CAPS_FOR_CONSTANTS
+	"camelcase": true,
+	// This option requires you to always put curly braces around blocks in loops and conditionals.
+	"curly": true,
+	// Always use ===.
+	"eqeqeq": true,
+	// This option requires all for in loops to filter an object's items using hasOwnProperty
+	"forin": true,
+	// This option prohibits the use of immediate function invocations without wrapping them in parentheses.
+	"immed":true,
+	// This option prohibits the use of a variable before it was defined.
+	"latedef": true,
+	// This option requires you to capitalize names of constructor functions.
+	"newcap": true,
+	// This option prohibits the use of arguments.caller and arguments.callee.
+	"noarg": true,
+	// This option warns when you have an empty block in your code.
+	"noempty": false,
+	// No side-effects in constructors.
+	"nonew": true,
+	// Requires all strings to be single quoted.
+	"quotmark": "single",
+	// This option prohibits the use of unsafe . in regular expressions.
+	"regexp": false,
+	// This option prohibits the use of explicitly undeclared variables.
+	"undef": true,
+	// Require ECMAScript 5 strict mode
+	"strict": true,
+	// This option makes it an error to leave a trailing whitespace in your code.
+	"trailing": true,
+	// Constants for alert, console, etc.
+	"devel": true,
+	// Constants for jquery
+	"jquery": true,
+	// This option suppresses warnings about mixed tabs and spaces when the latter are used for alignmnent only.
+	"smarttabs": true,
+	// Suppresses warning about using ['someKey'] instead of .someKey
+	"sub": true,
+
+	// Additional global vars
+	"predef": [
+		"angular", // AngularJS global object
+		"_", // Underscore.js global object
+		// All the jasmine globals
+		"jasmine",
+		"spyOn",
+		"it",
+		"console",
+		"describe",
+		"expect",
+		"beforeEach",
+		"afterEach",
+		"waits",
+		"waitsFor",
+		"runs",
+
+		// AngularJS Jasmine Adapter Globals
+		"inject",
+		"module",
+		"xit",
+		"xdescribe",
+		"iit",
+		"ddescribe",
+
+		// Protractor Jasmine Adapter Globals and Node Globals
+		"by",
+		"element",
+		"browser",
+		"require",
+
+		// Additional testing libraries and our own global functions
+		"sinon",
+		"mock",
+		"autoStub",
+		"autoSpy",
+		"resolved",
+		"rejected",
+		"isPromise"
+	]
+}
