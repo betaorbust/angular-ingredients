@@ -16,6 +16,7 @@ In the future, we'll be removing our dependence on underscore, but for code berv
 	- [validator](src/services/validator) - A service to validate form fields.
 	- [facebook](src/services/facebook) - A service for both authenticating, and sharing on
 		Facebook.
+	- [google](src/services/google) - A service for authenticating via google.
 	- [mixin](src/services/mixin) - A service for adding event mixins to arbitrary objects.
 	- [callbackList](src/services/mixin) - A service for maintaining callback lists in Angular.
 
