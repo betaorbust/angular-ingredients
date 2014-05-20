@@ -12,7 +12,7 @@ angular.module('ingredients')
 		'restrict': 'A',
 		'transclude': true,
 		'scope': true,
-		'template': '<div ng-show="isModalActive(name)" class="modal">' +
+		'template': '<div ng-if="isModalActive(name)" class="modal">' +
 			'<div class="modal-backdrop"' +
 					'data-ng-click="cancelUnlessBackdropCancelDisabled()"></div>' +
 				'<div class="modal-dialog">' +
