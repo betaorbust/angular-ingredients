@@ -9,6 +9,58 @@
 // .modal-dialog    - positioning shell for the actual modal
 // .modal-content   - actual modal w/ bg and corners and shit
 
+
+
+// Default Variables
+// --------------------------------------------------
+
+// This section handles the case where you're NOT comipling this in the presence of the bootstrap
+// framework. As it is a fork for the framework, variables may not be defined if you haven't
+// previously defined these variables (through an import of the variables.less etc.)
+// The folowing mixin declaration and evocation will set up the variables and mixins if they do
+// not exist but won't do anything if they are previously defined.
+// Feel free to rip this part out if your projet is bootstrapped already :)
+.define-bootstrap-pieces-if-not-defined(){
+	@border-radius-large: 0;
+	@line-height-base: 1.7;
+	@modal-backdrop-bg: rgba(54, 54, 54, 0.7);
+	@modal-content-bg: #fff;
+	@modal-content-border-color: rgba(0,0,0,.2);
+	@modal-content-fallback-border-color: #999;
+	@modal-footer-border-color: @modal-header-border-color;
+	@modal-header-border-color: #e5e5e5;
+	@modal-inner-padding: 20px;
+	@modal-title-line-height: @line-height-base;
+	@modal-title-padding: 15px;
+	@screen-sm-min: @screen-sm;
+	@screen-sm: 768px;
+	@zindex-modal-background: 1040;
+	// Drop shadows
+	.box-shadow(@shadow) {
+		-webkit-box-shadow: @shadow; // iOS <4.3 & Android <4.1
+		box-shadow: @shadow;
+	}
+	// Opacity
+	.opacity(@opacity) {
+		opacity: @opacity;
+		// IE8 filter
+		@opacity-ie: (@opacity * 100);
+		filter: ~"alpha(opacity=@{opacity-ie})";
+	}
+	.clearfix() {
+		&:before,
+		&:after {
+			content: " "; /* 1 */
+			display: table; /* 2 */
+		}
+		&:after {
+			clear: both;
+		}
+	}
+} .define-bootstrap-pieces-if-not-defined();
+
+
+
 // Kill the scroll on the body
 .modal-open {
 	overflow: hidden;
@@ -115,13 +167,13 @@
 // Scale up the modal
 @media screen and (min-width: @screen-sm-min) {
 
-  .modal-dialog {
-    width: 600px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-  }
-  .modal-content {
-    .box-shadow(0 5px 15px rgba(0,0,0,.5));
-  }
+	.modal-dialog {
+		width: 600px;
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+	.modal-content {
+		.box-shadow(0 5px 15px rgba(0,0,0,.5));
+	}
 
 }
