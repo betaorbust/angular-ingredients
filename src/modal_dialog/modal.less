@@ -9,119 +9,171 @@
 // .modal-dialog    - positioning shell for the actual modal
 // .modal-content   - actual modal w/ bg and corners and shit
 
+
+
+// Default Variables
+// --------------------------------------------------
+
+// This section handles the case where you're NOT compiling this in the presence of the bootstrap
+// framework. As it is a fork for the framework, variables may not be defined if you haven't
+// previously defined these variables (through an import of the variables.less etc.)
+// The following mixin declaration and evocation will set up the variables and mixins if they do
+// not exist but won't do anything if they are previously defined.
+// Feel free to rip this part out if your project is bootstrapped already :)
+.define-bootstrap-pieces-if-not-defined(){
+	@border-radius-large: 0;
+	@line-height-base: 1.7;
+	@modal-backdrop-bg: rgba(54, 54, 54, 0.7);
+	@modal-content-bg: #fff;
+	@modal-content-border-color: rgba(0,0,0,.2);
+	@modal-content-fallback-border-color: #999;
+	@modal-footer-border-color: @modal-header-border-color;
+	@modal-header-border-color: #e5e5e5;
+	@modal-inner-padding: 20px;
+	@modal-title-line-height: @line-height-base;
+	@modal-title-padding: 15px;
+	@screen-sm-min: @screen-sm;
+	@screen-sm: 768px;
+	@zindex-modal-background: 1040;
+	// Drop shadows
+	.box-shadow(@shadow) {
+		-webkit-box-shadow: @shadow; // iOS <4.3 & Android <4.1
+		box-shadow: @shadow;
+	}
+	// Opacity
+	.opacity(@opacity) {
+		opacity: @opacity;
+		// IE8 filter
+		@opacity-ie: (@opacity * 100);
+		filter: ~"alpha(opacity=@{opacity-ie})";
+	}
+	.clearfix() {
+		&:before,
+		&:after {
+			content: " "; /* 1 */
+			display: table; /* 2 */
+		}
+		&:after {
+			clear: both;
+		}
+	}
+} .define-bootstrap-pieces-if-not-defined();
+
+
+
 // Kill the scroll on the body
 .modal-open {
-  overflow: hidden;
+	overflow: hidden;
 }
 
 // Container that the modal scrolls within
 .modal {
-  display: none;
-  overflow: auto;
-  overflow-y: scroll;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: @zindex-modal-background;
+	display: none;
+	overflow: auto;
+	overflow-y: scroll;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: @zindex-modal-background;
 }
 
 // Shell div to position the modal with bottom padding
 .modal-dialog {
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  width: auto;
-  padding: 10px;
-  z-index: (@zindex-modal-background + 10);
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	width: auto;
+	padding: 10px;
+	z-index: (@zindex-modal-background + 10);
 }
 
 // Actual modal
 .modal-content {
-  position: relative;
-  background-color: @modal-content-bg;
-  border: 1px solid @modal-content-fallback-border-color; //old browsers fallback (ie8 etc)
-  border: 1px solid @modal-content-border-color;
-  border-radius: @border-radius-large;
-  .box-shadow(0 3px 9px rgba(0,0,0,.5));
-  background-clip: padding-box;
-  // Remove focus outline from opened modal
-  outline: none;
+	position: relative;
+	background-color: @modal-content-bg;
+	border: 1px solid @modal-content-fallback-border-color; //old browsers fallback (ie8 etc)
+	border: 1px solid @modal-content-border-color;
+	border-radius: @border-radius-large;
+	.box-shadow(0 3px 9px rgba(0,0,0,.5));
+	background-clip: padding-box;
+	// Remove focus outline from opened modal
+	outline: none;
 }
 
 // Modal background
 .modal-backdrop {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: (@zindex-modal-background - 10);
-  background-color: @modal-backdrop-bg;
-  // Fade for backdrop
-  &.fade { .opacity(0); }
-  &.in { .opacity(.5); }
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: (@zindex-modal-background - 10);
+	background-color: @modal-backdrop-bg;
+	// Fade for backdrop
+	&.fade { .opacity(0); }
+	&.in { .opacity(.5); }
 }
 
 // Modal header
 // Top section of the modal w/ title and dismiss
 .modal-header {
-  padding: @modal-title-padding;
-  border-bottom: 1px solid @modal-header-border-color;
-  min-height: (@modal-title-padding + @modal-title-line-height);
+	padding: @modal-title-padding;
+	border-bottom: 1px solid @modal-header-border-color;
+	min-height: (@modal-title-padding + @modal-title-line-height);
 }
 // Close icon
 .modal-header .close {
-  margin-top: -2px;
+	margin-top: -2px;
 }
 
 // Title text within header
 .modal-title {
-  margin: 0;
-  line-height: @modal-title-line-height;
+	margin: 0;
+	line-height: @modal-title-line-height;
 }
 
 // Modal body
 // Where all modal content resides (sibling of .modal-header and .modal-footer)
 .modal-body {
-  position: relative;
-  padding: @modal-inner-padding;
+	position: relative;
+	padding: @modal-inner-padding;
 }
 
 // Footer (for actions)
 .modal-footer {
-  margin-top: 15px;
-  padding: (@modal-inner-padding - 1) @modal-inner-padding @modal-inner-padding;
-  text-align: right; // right align buttons
-  border-top: 1px solid @modal-footer-border-color;
-  .clearfix(); // clear it in case folks use .pull-* classes on buttons
+	margin-top: 15px;
+	padding: (@modal-inner-padding - 1) @modal-inner-padding @modal-inner-padding;
+	text-align: right; // right align buttons
+	border-top: 1px solid @modal-footer-border-color;
+	.clearfix(); // clear it in case folks use .pull-* classes on buttons
 
-  // Properly space out buttons
-  .btn + .btn {
-    margin-left: 5px;
-    margin-bottom: 0; // account for input[type="submit"] which gets the bottom margin like all other inputs
-  }
-  // but override that for button groups
-  .btn-group .btn + .btn {
-    margin-left: -1px;
-  }
-  // and override it for block buttons as well
-  .btn-block + .btn-block {
-    margin-left: 0;
-  }
+	// Properly space out buttons
+	.btn + .btn {
+		margin-left: 5px;
+		margin-bottom: 0; // account for input[type="submit"] which gets the bottom margin like all other inputs
+	}
+	// but override that for button groups
+	.btn-group .btn + .btn {
+		margin-left: -1px;
+	}
+	// and override it for block buttons as well
+	.btn-block + .btn-block {
+		margin-left: 0;
+	}
 }
 
 // Scale up the modal
 @media screen and (min-width: @screen-sm-min) {
 
-  .modal-dialog {
-    width: 600px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-  }
-  .modal-content {
-    .box-shadow(0 5px 15px rgba(0,0,0,.5));
-  }
+	.modal-dialog {
+		width: 600px;
+		padding-top: 30px;
+		padding-bottom: 30px;
+	}
+	.modal-content {
+		.box-shadow(0 5px 15px rgba(0,0,0,.5));
+	}
 
 }
