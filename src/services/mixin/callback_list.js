@@ -13,6 +13,7 @@
 angular.module('ingredients')
 
 .factory('callbackList', function () {
+	'use strict';
 	/**
 	 * @ngdoc object
 	 * @name ingredients.callbackList
