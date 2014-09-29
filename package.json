@@ -1,23 +1,24 @@
 {
-  "name": "angular_ingredients",
-  "version": "0.1.0",
-  "description": "A collection of reusable AngularJS services. Initially developed at Udacity and maintained for the larger Angular community.",
-  "dependencies": {
-    "underscore": "~1.5.2",
-    "karma": "~0.10.4",
-    "karma-ng-html2js-preprocessor": "~0.1.0",
-    "karma-junit-reporter": "~0.1.0",
-    "phantomjs": "~1.9.2",
-    "karma-coverage": "~0.1.0",
-    "jshint": "~2.3.0"
-  },
-  "engines": {
-    "node": ">= 0.10.2"
-  },
-  "scripts": {
-    "test": "ulimit -S -n 512; node_modules/karma/bin/karma start",
+	"name": "angular_ingredients",
+	"version": "0.1.0",
+	"description": "A collection of reusable AngularJS services. Initially developed at Udacity and maintained for the larger Angular community.",
+	"dependencies": {
+		"underscore": "~1.5.2",
+		"karma": "~0.10.4",
+		"karma-ng-html2js-preprocessor": "~0.1.0",
+		"karma-junit-reporter": "~0.1.0",
+		"phantomjs": "~1.9.2",
+		"karma-coverage": "~0.1.0",
+		"jshint": "~2.3.0"
+	},
+	"engines": {
+		"node": ">= 0.10.2"
+	},
+	"scripts": {
+		"test": "ulimit -S -n 512; node_modules/karma/bin/karma start --single-run",
+		"testcontinuous": "ulimit -S -n 512; node_modules/karma/bin/karma start",
 		"cleaninstall": "rm -rf node_modules/; npm install --production;"
-  },
-  "engineStrict": true,
-  "private": true
+	},
+	"engineStrict": true,
+	"private": true
 }
