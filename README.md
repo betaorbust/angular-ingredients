@@ -1,6 +1,8 @@
 angular-ingredients
 ===================
 
+![Travis CI status](https://travis-ci.org/betaorbust/angular-ingredients.svg?branch=master)
+
 A collection of reusable AngularJS modules. Initially developed at Udacity and maintained for the
 larger Angular community.
 
